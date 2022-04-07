@@ -114,12 +114,20 @@ void basicFunctions() {
         sprintf(TXbuffer, "t3.txt=\"%s\"", ipaddr);
         check=0;
     }
+
+    // Send Mode to Screen on t35.txt
+    if ((page==0)&&(strstr(TXbuffer,"t2.txt=")>0)&&(check++>100)&&(modestr!=NULL)) {
+        sprintf(text,"t35.txt=\"%s\"",modestr);
+        sendCommand(text);
+     }
+
     // check temp & CPU freq (also not too often)
     if (page==0){
         p=strstr(TXbuffer,"t2");
         if (p==NULL) p=strstr(TXbuffer,"t3");
         if ((p!=NULL)&&(p[7]==61)&&((p[2]&48)==48)) { TXbuffer[0]=0; return; }
     }
+
     if (((page==0)&&(strstr(TXbuffer,"t2.txt=")!=NULL)&&(check%8==1))||(strstr(TXbuffer,"status.val=17")!=NULL)) {
         FILE *deviceInfoFile;
         double val;
